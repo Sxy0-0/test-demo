@@ -24,6 +24,11 @@ public class IndexController {
 
     @GetMapping("/index")
     public String index1(){
+        String test = (String)redisTemplate.opsForValue().get("test");
+        if (test != null){
+            System.out.println("redis取值");
+            return test;
+        }
         String name = indexMapper.selectById(1).getName();
         redisTemplate.opsForValue().set("test",name);
         return name;
