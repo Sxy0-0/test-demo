@@ -3,7 +3,7 @@
 <mapper namespace="com.demo.mapper.IndexMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="index" type="com.demo.entity.indexTest">
+    <resultMap id="index" type="com.demo.entity.IndexTest">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
     </resultMap>
