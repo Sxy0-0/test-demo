@@ -3,6 +3,9 @@ package com.demo.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.demo.entity.IndexTest;
+import com.demo.entity.RedisTest;
+import com.demo.exception.Result;
+import com.demo.exception.ResultCode;
 import com.demo.feign.DetailPhoneClient;
 import com.demo.mapper.IndexMapper;
 import com.demo.properties.DemoProperties;
@@ -11,9 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class IndexController {
@@ -50,11 +58,16 @@ public class IndexController {
 
     @GetMapping("setIndex/{id}")
     public String setIndexById(@PathVariable int id){
-        IndexTest indexTest = new IndexTest();
-        indexTest.setId(id);
-        indexTest.setName(id+"name");
+//        IndexTest indexTest = new IndexTest();
+//        indexTest.setId(id);
+//        indexTest.setName(id+"name");
 
-        redisTemplate.opsForValue().set("key-" + id ,indexTest);
+        RedisTest redisTest = new RedisTest();
+        redisTest.setId(id);
+        redisTest.setName(id+"name");
+        redisTest.setNameList(Arrays.asList("2","23"));
+
+        redisTemplate.opsForValue().set("key-" + id ,redisTest);
 
         return "成功";
     }
@@ -63,7 +76,7 @@ public class IndexController {
     public String getIndexById(@PathVariable int id){
         String s = redisTemplate.opsForValue().get("key-" + id) + "";
         System.out.println(s);
-        IndexTest o = (IndexTest)redisTemplate.opsForValue().get("key-"+id);
+        RedisTest o = (RedisTest)redisTemplate.opsForValue().get("key-"+id);
         if (o == null){
             return "结果为空";
         }else{
@@ -93,10 +106,18 @@ public class IndexController {
         String cityByPhone = getCityByPhone(phone);
         return cityByPhone;
     }
-    @GetMapping("publish")
-    public String publish(){
-        publisher.publish("测试");
-        return "完成";
+
+    @PostMapping("publish")
+    public Result publish(@Valid @RequestBody IndexTest indexTest){
+//        List<BigDecimal> list = new ArrayList<>();
+//        Optional<BigDecimal> reduce = list.stream().reduce(BigDecimal::add);
+//        BigDecimal bigDecimal = reduce.get();
+
+//        publisher.publish("测试");
+//        int i = 2/0;
+        System.out.println(indexTest.getName());
+//        return Result.fail(ResultCode.OTHER_ERROR);
+        return Result.success();
     }
 
 
