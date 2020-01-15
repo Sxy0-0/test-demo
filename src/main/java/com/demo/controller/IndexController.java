@@ -10,6 +10,9 @@ import com.demo.feign.DetailPhoneClient;
 import com.demo.mapper.IndexMapper;
 import com.demo.properties.DemoProperties;
 import com.demo.service.Publisher;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 public class IndexController {
 
@@ -37,11 +41,13 @@ public class IndexController {
     @Autowired
     private DetailPhoneClient detailPhoneClient;
 
+
     private static final String cacheName = "cacheTest";
 
     @GetMapping("/index1")
-    public String index(){
-        return demoProperties.getName() + demoProperties.getTitle();
+    public String index(String name){
+        log.info("do it");
+        return name + demoProperties.getTitle();
     }
 
     @GetMapping("/index")

@@ -17,6 +17,7 @@ public class AnyExceptionHandler {
         // TODO: 2019/12/19 进入一个异常的页面
         System.out.println("进入了异常处理");
         System.out.println("异常信息是::::::"+e.getMessage());
+        e.printStackTrace();
         return Result.fail(ResultCode.OTHER_ERROR);
     }
 

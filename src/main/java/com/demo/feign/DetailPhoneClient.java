@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(
         name = "test",
         url = "http://mobsec-dianhua.baidu.com/dianhua_api",
+        fallback = DetailPhoneFallback.class,
         configuration = FeignConfig.class
 )
 public interface DetailPhoneClient {
 
     @RequestMapping(value = "/open/location?tel={tel}&qq-pf-to=pcqq.c2c",method = RequestMethod.GET)
 //    @Headers("Content-Type: text/html")
-//    @RequestLine("GET /open/location?tel={tel}&qq-pf-to=pcqq.c2c")
     JSONObject getDetailByPhone(@RequestParam(value = "tel") String tel);
 
 }
